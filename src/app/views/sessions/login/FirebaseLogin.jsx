@@ -1,5 +1,9 @@
 
 
+import { useDispatch, useSelector } from "react-redux";
+// import { setUser, setAuthenticated } from "redux/actions/authActions"; 
+import { login } from "../../../../redux/actions/authActions";
+
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { Formik } from "formik";
@@ -70,10 +74,11 @@ const FirebaseRoot = styled("div")(({ theme }) => ({
 
 // initial login credentials
 const initialValues = {
-  email: "jason@ui-lib.com",
-  password: "dummyPass",
+  email: "Admin@kayjayglobal.com",
+  password: "Admin@123",
   remember: true
 };
+
 const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
@@ -82,21 +87,38 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function FirebaseLogin() {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
   const { state } = useLocation();
   const { enqueueSnackbar } = useSnackbar();
   const { signInWithEmail, signInWithGoogle } = useAuth();
-
+  const auth = useSelector((state) => state.auth);
+  // const handleFormSubmit = async (values) => {
+  //   try {
+  //     await signInWithEmail(values.email, values.password);
+  //     console.log("Login successful", values.email, values.password);
+  //     navigate(state ? state.from : "/");
+  //     enqueueSnackbar("Logged in successfully", { variant: "success" });
+  //   } catch (error) {
+  //     enqueueSnackbar(error.message, { variant: "error" });
+  //   }
+  // };
   const handleFormSubmit = async (values) => {
     try {
-      await signInWithEmail(values.email, values.password);
-      navigate(state ? state.from : "/");
-      enqueueSnackbar("Logged in successfully", { variant: "success" });
+      const result = await dispatch(login(values.email, values.password));
+  
+      if (result.success) {
+        navigate(state ? state.from : "/");
+        enqueueSnackbar("Logged in successfully", { variant: "success" });
+      } else {
+        enqueueSnackbar(result.error || "Login failed", { variant: "error" });
+      }
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
+
 
   const handleGoogleLogin = async () => {
     try {

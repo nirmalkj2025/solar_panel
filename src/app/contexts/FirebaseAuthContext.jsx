@@ -44,8 +44,10 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialAuthState);
 
-  const signInWithEmail = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const signInWithEmail = async (email, password) => {
+    let firebaseResponse  =  await signInWithEmailAndPassword(auth, email, password);
+    console.log("signInWithEmail",firebaseResponse);
+    return firebaseResponse;
   };
 
   const signInWithGoogle = () => {

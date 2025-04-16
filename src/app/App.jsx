@@ -12,20 +12,25 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 // FAKE SERVER
 import "../__api__";
-
+// Import the Redux store and Provider
+import { Provider } from "react-redux";
+import {store} from "../redux/store";
 export default function App() {
   const content = useRoutes(routes);
 
   return (
-    <SettingsProvider>
-      <AuthProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <MatxTheme>
-            <CssBaseline />
-            {content}
-          </MatxTheme>
-        </LocalizationProvider>
-      </AuthProvider>
-    </SettingsProvider>
+    // Wrap your app with the Redux Provider to make the store available
+    <Provider store={store}>
+      <SettingsProvider>
+        {/* <AuthProvider> */}
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <MatxTheme>
+              <CssBaseline />
+              {content}
+            </MatxTheme>
+          </LocalizationProvider>
+        {/* </AuthProvider> */}
+      </SettingsProvider>
+    </Provider>
   );
 }
