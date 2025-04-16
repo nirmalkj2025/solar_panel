@@ -20,5 +20,9 @@ export default defineConfig({
     alias: {
       app: path.resolve(__dirname, "src/app")
     }
+  },
+  preview: {
+    host: "0.0.0.0",
+    port: 4173 // You can change this if needed, just make sure it's open
   }
 });
