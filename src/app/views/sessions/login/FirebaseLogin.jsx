@@ -1,3 +1,5 @@
+
+
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { Formik } from "formik";
@@ -66,13 +68,12 @@ const FirebaseRoot = styled("div")(({ theme }) => ({
   }
 }));
 
-// Initial login credentials (optional: prefill for dev)
+// initial login credentials
 const initialValues = {
-  email: "",
-  password: "",
+  email: "jason@ui-lib.com",
+  password: "dummyPass",
   remember: true
 };
-
 const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
