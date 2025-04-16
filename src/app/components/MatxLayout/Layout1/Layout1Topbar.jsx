@@ -26,6 +26,8 @@ import { MatxMenu, MatxSearchBox } from "app/components";
 import { NotificationBar } from "app/components/NotificationBar";
 import { themeShadows } from "app/components/MatxTheme/themeColors";
 import { topBarHeight } from "app/utils/constant";
+import PlantSelector from "./PlantSelector";
+
 
 // STYLED COMPONENTS
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -100,7 +102,11 @@ const Layout1Topbar = () => {
     }
     updateSidebarMode({ mode });
   };
-
+  const plants = [
+    { id: 1, name: 'Solar Plant Alpha' },
+    { id: 2, name: 'Rooftop Plant Beta' },
+    { id: 3, name: 'Floating Plant Gamma' },
+  ];
   return (
     <TopbarRoot>
       <TopbarContainer>
@@ -109,7 +115,7 @@ const Layout1Topbar = () => {
             <Menu />
           </StyledIconButton>
 
-          <IconBox>
+          {/* <IconBox>
             <StyledIconButton>
               <MailOutline />
             </StyledIconButton>
@@ -121,24 +127,27 @@ const Layout1Topbar = () => {
             <StyledIconButton>
               <StarOutline />
             </StyledIconButton>
-          </IconBox>
+          </IconBox> */}
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
-
-          <NotificationProvider>
+          {/* <MatxSearchBox /> */}
+          <PlantSelector
+            plants={plants}
+            onSelect={(plant) => console.log('Selected plant:', plant)}
+          />
+          {/* <NotificationProvider>
             <NotificationBar />
           </NotificationProvider>
 
-          <ShoppingCart />
+          <ShoppingCart /> */}
 
           <MatxMenu
             menuButton={
               <UserMenu>
-                <Span>
+                {/* <Span>
                   Hi <strong>{user.name}</strong>
-                </Span>
+                </Span> */}
 
                 <Avatar src={user.avatar} sx={{ cursor: "pointer" }} />
               </UserMenu>
