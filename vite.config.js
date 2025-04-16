@@ -23,6 +23,6 @@ export default defineConfig({
   },
   preview: {
     host: "0.0.0.0",
-    port: 4173 // You can change this if needed, just make sure it's open
+    port: process.env.PORT || 4173
   }
 });
