@@ -11,11 +11,11 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import { styled, useTheme } from "@mui/material/styles";
 import LoadingButton from "@mui/lab/LoadingButton";
-// GLOBAL CUSTOM COMPONENTS
+
 import MatxLogo from "app/components/MatxLogo";
 import MatxDivider from "app/components/MatxDivider";
 import { Paragraph, Span } from "app/components/Typography";
-// GLOBAL CUSTOM HOOKS
+
 import useAuth from "app/hooks/useAuth";
 
 // STYLED COMPONENTS
@@ -37,7 +37,7 @@ const FirebaseRoot = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "#1A2038",
+  background: "#0b0f26",
   minHeight: "100vh !important",
   "& .card": { maxWidth: 800, margin: "1rem" },
   "& .cardLeft": {
@@ -47,45 +47,37 @@ const FirebaseRoot = styled("div")(({ theme }) => ({
     padding: "32px 56px",
     flexDirection: "column",
     backgroundSize: "cover",
-    background: "#161c37 url(/assets/images/bg-3.png) no-repeat",
+    background: "#101632 url(/assets/images/solar-bg.jpg) no-repeat center",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
     [theme.breakpoints.down("sm")]: { minWidth: 200 },
     "& img": { width: 32, height: 32 }
   },
   "& .mainTitle": {
-    fontSize: 18,
-    lineHeight: 1.3,
+    fontSize: 20,
+    fontWeight: 600,
+    lineHeight: 1.4,
     marginBottom: 24
   },
-  "& .item": {
-    position: "relative",
-    marginBottom: 12,
-    paddingLeft: 16,
-    "&::after": {
-      top: 8,
-      left: 0,
-      width: 4,
-      height: 4,
-      content: '""',
-      borderRadius: 4,
-      position: "absolute",
-      backgroundColor: theme.palette.error.main
-    }
+  "& .feature": {
+    fontSize: 14,
+    marginBottom: 10,
+    opacity: 0.85
   }
 }));
 
-// initial login credentials
+// Initial login credentials (optional: prefill for dev)
 const initialValues = {
-  email: "jason@ui-lib.com",
-  password: "dummyPass",
+  email: "",
+  password: "",
   remember: true
 };
 
-// form field validation schema
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, "Password must be 6 character length")
-    .required("Password is required!"),
-  email: Yup.string().email("Invalid Email address").required("Email is required!")
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  email: Yup.string().email("Invalid email").required("Email is required")
 });
 
 export default function FirebaseLogin() {
@@ -97,12 +89,10 @@ export default function FirebaseLogin() {
 
   const handleFormSubmit = async (values) => {
     try {
-      // alert(JSON.stringify(values, null, 4));
       await signInWithEmail(values.email, values.password);
       navigate(state ? state.from : "/");
-      enqueueSnackbar("Logged In Successfully", { variant: "success" });
+      enqueueSnackbar("Logged in successfully", { variant: "success" });
     } catch (error) {
-      alert(JSON.stringify(error, null, 4));
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
@@ -112,7 +102,7 @@ export default function FirebaseLogin() {
       await signInWithGoogle();
       navigate("/");
     } catch (e) {
-      console.error(e);
+      enqueueSnackbar("Google sign-in failed", { variant: "error" });
     }
   };
 
@@ -123,21 +113,22 @@ export default function FirebaseLogin() {
           <Grid size={{ md: 6, xs: 12 }}>
             <div className="cardLeft">
               <Logo>
-                <MatxLogo /> <span>MatX Pro</span>
+                <MatxLogo /> <span>SolarPulse</span>
               </Logo>
 
-              <h1 className="mainTitle">Admin Dashboard</h1>
+              <h1 className="mainTitle">Smart Solar Plant Dashboard</h1>
 
-              <div className="features">
-                <div className="item">JWT, Firebase & Auth0 Authentication</div>
-                <div className="item">Clean & Organized code</div>
-                <div className="item">Limitless Pages & Components</div>
-              </div>
+              <div className="feature">⚡ Real-time Device & Fault Monitoring</div>
+              <div className="feature">📊 Intelligent Analytics & Energy Insights</div>
+              <div className="feature">🔐 Secure Access with Role Management</div>
 
-              <Span flexGrow={1}></Span>
+              <Span flexGrow={1} />
 
-              <a href="https://ui-lib.com/" target="_blank" rel="noopener noreferrer">
-                <img src="/assets/images/logos/ui-lib.png" alt="UI Lib Logo" />
+              <a
+                href="https://your-solar-app.com"
+                target="_blank"
+                rel="noopener noreferrer">
+                <img src="/assets/images/logos/solar-icon.png" alt="Solar Logo" />
               </a>
             </div>
           </Grid>
@@ -149,11 +140,11 @@ export default function FirebaseLogin() {
                 variant="contained"
                 onClick={handleGoogleLogin}
                 startIcon={<img src="/assets/images/logos/google.svg" alt="google" />}>
-                Sign In With Google
+                Sign in with Google
               </GoogleButton>
             </Box>
 
-            <MatxDivider sx={{ mt: 3, px: 4 }} text="Or" />
+            <MatxDivider sx={{ mt: 3, px: 4 }} text="Or sign in with Email" />
 
             <Box p={4}>
               <Formik
@@ -197,10 +188,10 @@ export default function FirebaseLogin() {
                       onChange={handleChange}
                       helperText={touched.password && errors.password}
                       error={Boolean(errors.password && touched.password)}
-                      sx={{ mb: 1.5 }}
+                      sx={{ mb: 2 }}
                     />
 
-                    <Box display="flex" justifyContent="space-between">
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Box display="flex" alignItems="center" gap={1}>
                         <Checkbox
                           size="small"
@@ -209,8 +200,7 @@ export default function FirebaseLogin() {
                           checked={values.remember}
                           sx={{ padding: 0 }}
                         />
-
-                        <Paragraph>Remember Me</Paragraph>
+                        <Paragraph>Remember me</Paragraph>
                       </Box>
 
                       <NavLink
@@ -225,18 +215,16 @@ export default function FirebaseLogin() {
                       color="primary"
                       loading={isSubmitting}
                       variant="contained"
-                      sx={{ my: 2 }}>
-                      Login
+                      fullWidth
+                      sx={{ mt: 3, mb: 1 }}>
+                      Sign In
                     </LoadingButton>
 
                     <Paragraph>
-                      Don't have an account?
+                      Don’t have an account?
                       <NavLink
                         to="/session/signup"
-                        style={{
-                          marginInlineStart: 5,
-                          color: theme.palette.primary.main
-                        }}>
+                        style={{ marginInlineStart: 5, color: theme.palette.primary.main }}>
                         Register
                       </NavLink>
                     </Paragraph>
