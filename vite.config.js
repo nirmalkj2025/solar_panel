@@ -2,6 +2,10 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 export default defineConfig({
   plugins: [
@@ -21,14 +25,15 @@ export default defineConfig({
     }
   },
   server: {
-    port: process.env.VITE_PORT || 4174, // Use VITE_PORT from .env or fallback to 3000
+    port: process.env.VITE_PORT || 4174, // Use VITE_PORT from .env or fallback to 4174
   },
   preview: {
     host: "0.0.0.0",
     port: process.env.VITE_PORT || 4174, // Same here for preview, use VITE_PORT
     allowedHosts: [
       "solar-panel-uq2z.onrender.com",
-      "localhost"
+      "localhost",
+      "solar-panel1.onrender.com"  // Add the Render host here
     ]
   }
 });
