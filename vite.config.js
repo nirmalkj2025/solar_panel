@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -21,11 +20,14 @@ export default defineConfig({
       app: path.resolve(__dirname, "src/app")
     }
   },
+  server: {
+    port: process.env.VITE_PORT || 4174, // Use VITE_PORT from .env or fallback to 3000
+  },
   preview: {
     host: "0.0.0.0",
-    port: parseInt(process.env.PORT) || 4173,
+    port: process.env.VITE_PORT || 4174, // Same here for preview, use VITE_PORT
     allowedHosts: [
-      "solar-panel-uq2z.onrender.com", // ✅ No protocol, no slash
+      "solar-panel-uq2z.onrender.com",
       "localhost"
     ]
   }
