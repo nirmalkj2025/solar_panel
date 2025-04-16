@@ -25,7 +25,7 @@ export default defineConfig({
     host: "0.0.0.0",
     port: parseInt(process.env.PORT) || 4173,
     allowedHosts: [
-      "solar-panel-uq2z.onrender.com", // 👈 Add your Render domain here
+      "http://solar-panel-uq2z.onrender.com/", // 👈 Add your Render domain here
       "localhost"
     ]
   }
