@@ -4,8 +4,10 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import dotenv from "dotenv";
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
+
+const PORT = Number(process.env.VITE_PORT) || 4174;
 
 export default defineConfig({
   plugins: [
@@ -13,27 +15,27 @@ export default defineConfig({
     VitePWA({
       injectRegister: "auto",
       registerType: "autoUpdate",
-      workbox: { clientsClaim: true, skipWaiting: true }
-    })
+      workbox: {
+        clientsClaim: true,
+        skipWaiting: true,
+      },
+    }),
   ],
   build: {
-    chunkSizeWarningLimit: 2000
+    chunkSizeWarningLimit: 2000,
   },
   resolve: {
     alias: {
-      app: path.resolve(__dirname, "src/app")
-    }
+      app: path.resolve(__dirname, "src/app"),
+    },
   },
   server: {
-    port: process.env.VITE_PORT || 4174, // Use VITE_PORT from .env or fallback to 4174
-  },
-  preview: {
     host: "0.0.0.0",
-    port: process.env.VITE_PORT || 4174, // Same here for preview, use VITE_PORT
+    port: PORT,
     allowedHosts: [
       "solar-panel-uq2z.onrender.com",
       "localhost",
-      "solar-panel1.onrender.com"  // Add the Render host here
-    ]
-  }
+      "solar-panel1.onrender.com",
+    ],
+  },
 });
