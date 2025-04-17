@@ -11,6 +11,7 @@ import materialRoutes from "app/views/material-kit/MaterialRoutes";
 import plantMonitoringRoutes from "app/views/plantmonitoring/PlantMonitoringRoutes";
 import analyticsRoutes from "app/views/analytics/AnalyticsRoutes";
 import deviceRoutes from "app/views/devices/DeviceRoutes";
+import siteManagementRoutes from "./views/siteManagement/siteManagementRoutes";
 // E-CHART PAGE
 const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart")));
 // DASHBOARD PAGE
@@ -25,6 +26,7 @@ const routes = [
       </AuthGuard>
     ),
     children: [
+      ...siteManagementRoutes,
       ...materialRoutes,
       ...plantMonitoringRoutes,
       ...deviceRoutes,

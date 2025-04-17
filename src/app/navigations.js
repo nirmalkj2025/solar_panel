@@ -1,6 +1,8 @@
 const navigations = [
   { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
-
+  {label: "Site Management", type: "label"},
+  { name: "Clients", path: "/site-management/clients", icon: "groups" },         // 👥 groups = user group
+  { name: "Locations", path: "/site-management/locations", icon: "location_on" }, // 📍 location pin
   { label: "PLANT MONITORING", type: "label" },
   { name: "Plants", path: "/plant-monitoring/plants", icon: "solar_power" },
   { name: "Plant Type Master", path: "/plant-monitoring/plant-type-master", icon: "category" },

@@ -57,6 +57,7 @@ const LayoutContainer = styled("div", {
 const Layout1 = () => {
   const { settings, updateSettings } = useSettings();
   const { layout1Settings, secondarySidebar } = settings;
+  console.log("settings.themes[layout1Settings.topbar.theme]", settings.themes[layout1Settings.topbar.theme])
   const topbarTheme = settings.themes[layout1Settings.topbar.theme];
   const {
     leftSidebar: { mode: sidenavMode, show: showSidenav }

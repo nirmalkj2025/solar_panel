@@ -60,6 +60,7 @@ export const themeColors = {
       text: textLight,
     },
   },
+  // need reading
   slateDark1: {
     palette: {
       type: 'dark',

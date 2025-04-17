@@ -133,7 +133,7 @@ export default function FirebaseLogin() {
     <FirebaseRoot>
       <Card className="card">
         <Grid container>
-          <Grid size={{ md: 6, xs: 12 }}>
+          {/* <Grid size={{ md: 6, xs: 12 }}>
             <div className="cardLeft">
               <Logo>
                 <MatxLogo /> <span>SolarPulse</span>
@@ -154,9 +154,9 @@ export default function FirebaseLogin() {
                 <img src="/assets/images/logos/solar-icon.png" alt="Solar Logo" />
               </a>
             </div>
-          </Grid>
+          </Grid> */}
 
-          <Grid size={{ md: 6, xs: 12 }}>
+          <Grid size={{ md: 12, xs: 12 }}>
             <Box px={4} pt={4}>
               <GoogleButton
                 fullWidth

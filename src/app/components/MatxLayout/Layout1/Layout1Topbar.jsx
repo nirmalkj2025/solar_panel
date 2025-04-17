@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -102,10 +102,13 @@ const Layout1Topbar = () => {
     }
     updateSidebarMode({ mode });
   };
+  const [selectedPlants, setSelectedPlants] = useState([]);
+
   const plants = [
-    { id: 1, name: 'Solar Plant Alpha' },
-    { id: 2, name: 'Rooftop Plant Beta' },
-    { id: 3, name: 'Floating Plant Gamma' },
+    { id: 1, name: 'Solar Plant 1' },
+    { id: 2, name: 'Solar Plant 2' },
+    { id: 3, name: 'Solar Plant 3' },
+    // Add more plants here
   ];
   return (
     <TopbarRoot>
@@ -114,7 +117,11 @@ const Layout1Topbar = () => {
           <StyledIconButton onClick={handleSidebarToggle}>
             <Menu />
           </StyledIconButton>
-
+          <PlantSelector 
+         plants={plants} 
+         selectedPlants={selectedPlants} 
+         setSelectedPlants={setSelectedPlants}
+        />
           {/* <IconBox>
             <StyledIconButton>
               <MailOutline />
@@ -130,12 +137,8 @@ const Layout1Topbar = () => {
           </IconBox> */}
         </Box>
 
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="left">
           {/* <MatxSearchBox /> */}
-          <PlantSelector
-            plants={plants}
-            onSelect={(plant) => console.log('Selected plant:', plant)}
-          />
           {/* <NotificationProvider>
             <NotificationBar />
           </NotificationProvider>

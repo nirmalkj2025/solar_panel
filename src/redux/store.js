@@ -5,7 +5,8 @@ import {thunk} from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 // Your reducers
-import authReducer from "./reducers/authReducer";
+// import authReducer from "./reducers/authReducer";
+import rootReducer from "./reducers/rootReducer";
 
 // Persist config
 const persistConfig = {
@@ -15,9 +16,9 @@ const persistConfig = {
 };
 
 // Combine and persist
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
+// const rootReducer = combineReducers({
+//   auth: authReducer,
+// });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

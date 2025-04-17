@@ -9,7 +9,9 @@ import {
   Stack,
   IconButton,
   CircularProgress,
-  LinearProgress
+  LinearProgress,
+  Link,
+  Table, TableBody, TableRow, TableCell, TableHead, TableSortLabel,
 } from "@mui/material";
 import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -55,7 +57,8 @@ import {
   Wrench,
   DatabaseBackup,
   Cpu,
-  BadgeCheck
+  BadgeCheck,
+  ServerCog
 } from "lucide-react";
 
 const WeatherForecastImpactCard = ({
@@ -158,94 +161,92 @@ const WeatherForecastImpactCard = ({
     </Grid>
   );
 };
-const BlockchainAnalyticsCard = () => {
-  return (
-    <Grid item xs={12} md={4}>
-      <StatCard
-        elevation={3}
-        sx={{
-          bgcolor: "#1c1c1e",
-          color: "#fff",
-          p: 2,
-          border: "1px solid #2e2e2e",
-          borderRadius: 4,
-          boxShadow: "0 0 10px rgba(0, 95, 255, 0.2)"
-        }}
-      >
-        <Box mb={2}>
-          <Typography variant="subtitle1" fontWeight={600}>
-            <Cpu size={20} /> &nbsp; Blockchain Analytics
-          </Typography>
-          <Typography variant="caption" sx={{ color: "#bbb" }}>
-            Powered by distributed ledger verification
-          </Typography>
-        </Box>
+const InfoTable = ({ rows }) => (
+  <Table size="small" sx={{ mt: 1 }}>
+    <TableBody>
+      {rows.map(({ label, value, tooltip }) => (
+        <TableRow key={label}>
+          <TableCell sx={{ color: "#aaa", borderBottom: "none", pr: 1 }}>
+            <Tooltip title={tooltip || label} arrow>
+              <span>{label}</span>
+            </Tooltip>
+          </TableCell>
+          <TableCell
+            sx={{ color: "#fff", fontWeight: 500, borderBottom: "none", whiteSpace: "nowrap" }}
+          >
+            {value}
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+);
 
-        <Divider sx={{ borderColor: "#333", mb: 2 }} />
+const BlockchainAnalyticsCard = () => (
+  <Grid item xs={12} sm={12} md={6} lg={4}>
+    <StatCard
+      elevation={3}
+      sx={{
+        bgcolor: "#1c1c1e",
+        color: "#fff",
+        p: 2,
+        border: "1px solid #2e2e2e",
+        borderRadius: 4,
+        boxShadow: "0 0 12px rgba(0, 95, 255, 0.2)",
+        minHeight: "100%",
+      }}
+    >
+      <Box mb={1}>
+        <Typography variant="subtitle1" fontWeight={600}>
+          <Cpu size={18} /> &nbsp; Blockchain Analytics
+        </Typography>
+        <Typography variant="caption" sx={{ color: "#bbb" }}>
+          Distributed ledger assurance
+        </Typography>
+      </Box>
 
-        <Box display="flex" alignItems="center" gap={1} mb={1}>
-          <ShieldCheck size={18} color="#00e676" />
-          <Box>
-            <Typography variant="body2" fontWeight={500}>
-              Device Overview
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#999" }}>
-              Immutable registration & operational logs
-            </Typography>
-          </Box>
-        </Box>
+      <Divider sx={{ borderColor: "#333", mb: 1.5 }} />
 
-        <Box display="flex" alignItems="center" gap={1} mb={1}>
-          <Wrench size={18} color="#ff9100" />
-          <Box>
-            <Typography variant="body2" fontWeight={500}>
-              Fault and Recovery Status
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#999" }}>
-              Fault traces and auto-resolutions stamped on-chain
-            </Typography>
-          </Box>
-        </Box>
+      <InfoTable
+        rows={[
+          {
+            label: "Chain Status",
+            value: "✔ Verified (Device + Logs)",
+            tooltip: "Device and logs are registered on-chain",
+          },
+          {
+            label: "Update Window",
+            value: "Last: Apr 17 • First: Jun 13",
+            tooltip: "Time range of blockchain updates",
+          },
+          {
+            label: "Fault Log",
+            value: "✔ Auto-Healed, 3m 28s",
+            tooltip: "Last issue: Inverter failure (recovered)",
+          },
+          {
+            label: "Maint. Record",
+            value: "SysBot v2.1 • IPFS stored",
+            tooltip: "Last maintenance was blockchain stamped",
+          },
+          {
+            label: "Smart Contracts",
+            value: "v3.4 • Multi-Sig",
+            tooltip: "Triggers: SLA breach, Firmware update",
+          },
+        ]}
+      />
 
-        <Box display="flex" alignItems="center" gap={1} mb={1}>
-          <DatabaseBackup size={18} color="#29b6f6" />
-          <Box>
-            <Typography variant="body2" fontWeight={500}>
-              Maintenance Record
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#999" }}>
-              Verified maintenance history with timestamps
-            </Typography>
-          </Box>
-        </Box>
+      <Box mt={1.5} display="flex" flexWrap="wrap" gap={1}>
+        <Chip label="Audit Ready" size="small" color="info" />
+        <Chip label="Chain Verified" size="small" color="success" />
+        <Chip label="Auto-Heal" size="small" color="warning" />
+        <Chip label="Smart Triggered" size="small" sx={{ bgcolor: "#512da8", color: "#fff" }} />
+      </Box>
+    </StatCard>
+  </Grid>
+);
 
-        <Box display="flex" alignItems="center" gap={1} mb={1}>
-          <BadgeCheck size={18} color="#ab47bc" />
-          <Box>
-            <Typography variant="body2" fontWeight={500}>
-              Verifiable Blockchain Event
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#999" }}>
-              Signed smart contracts for critical updates
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box display="flex" alignItems="center" gap={1}>
-          <BadgeCheck size={18} color="#ffa726" />
-          <Box>
-            <Typography variant="body2" fontWeight={500}>
-              Variable Blockchain Events
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#999" }}>
-              Adaptive event triggers & storage optimization
-            </Typography>
-          </Box>
-        </Box>
-      </StatCard>
-    </Grid>
-  );
-};
 const BatteryStorageCard = ({ soc = 78, discharged = 12.6, health = 92, backupTime = 3.5 }) => {
   const batteryColor = soc >= 75 ? "success" : soc >= 40 ? "warning" : "error";
   const formattedBackupTime = backupTime.toFixed(1);

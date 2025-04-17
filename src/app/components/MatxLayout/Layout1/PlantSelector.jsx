@@ -1,77 +1,39 @@
-import { useState } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  Autocomplete,
-  TextField,
-  Paper,
-  styled
-} from '@mui/material';
-import { ChevronDown, Leaf } from 'lucide-react';
-import { topBarHeight } from 'app/utils/constant';
+import * as React from 'react';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { Button } from '@mui/material';
 
-const Container = styled(Paper)(({ theme }) => ({
-  position: 'relative',
-  background: theme.palette.primary.main,
-  color: theme.palette.text.primary,
-  display: 'flex',
-  alignItems: 'center',
-  padding: '0 16px',
-  height: topBarHeight,
-  borderRadius: 12,
-  boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-}));
-
-const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  width: 280,
-  '& .MuiInputBase-root': {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: 8,
-    paddingLeft: 8,
-    color: theme.palette.text.primary,
-    border: `1px solid ${theme.palette.divider}`,
-  },
-  '& .MuiSvgIcon-root': {
-    color: theme.palette.text.primary,
-  },
-}));
-
-const Label = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  fontSize: '0.85rem',
-  marginRight: 12,
-}));
-
-const PlantSelector = ({ plants = [], onSelect }) => {
-  const [selectedPlant, setSelectedPlant] = useState(null);
-
-  const handleChange = (_, newValue) => {
-    setSelectedPlant(newValue);
-    if (onSelect) onSelect(newValue);
+const PlantSelector = ({ plants = [], selectedPlants, setSelectedPlants }) => {
+  const handleChange = (event) => {
+    const { target: { value } } = event;
+    setSelectedPlants(typeof value === 'string' ? value.split(',') : value);
   };
 
   return (
-    <Container elevation={3}>
-      <Leaf size={18} style={{ marginRight: 8, color: '#00ffae' }} />
-      <Label>Select Plant</Label>
-      <StyledAutocomplete
-        options={plants}
-        getOptionLabel={(option) => option.name || ''}
-        value={selectedPlant}
+    <FormControl sx={{ m: 1, width: 300 }} size="small">
+      {/* <InputLabel id="demo-multiple-checkbox-label">Select Plant(s)</InputLabel> */}
+      <Select
+        labelId="demo-multiple-checkbox-label"
+        id="demo-multiple-checkbox"
+        multiple
+        value={selectedPlants}
         onChange={handleChange}
-        popupIcon={<ChevronDown size={18} />}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="Choose from list..."
-            variant="standard"
-            InputProps={{ ...params.InputProps, disableUnderline: true }}
-          />
-        )}
-      />
-    </Container>
+        input={<OutlinedInput label="Select Plant(s)" />}
+        renderValue={(selected) => selected.join(', ')}
+      >
+        {plants.map((plant) => (
+          <MenuItem key={plant.id} value={plant.name}>
+            <Checkbox checked={selectedPlants.indexOf(plant.name) > -1} />
+            <ListItemText primary={plant.name} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 
