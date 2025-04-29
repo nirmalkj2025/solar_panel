@@ -18,6 +18,7 @@ const AppEchart = Loadable(lazy(() => import("app/views/charts/echarts/AppEchart
 // DASHBOARD PAGE
 const Analytics = Loadable(lazy(() => import("app/views/dashboard/Analytics")));
 import SolarPlantDashboard from "./views/dashboard/SolarPlantDashboard";
+import { RMSDashboard } from "./views/rms/Dashboard";
 const routes = [
   { path: "/", element: <Navigate to="dashboard/default" /> },
   {
@@ -36,6 +37,8 @@ const routes = [
       // dashboard route
       { path: "/dashboard/default", element: <Analytics />, auth: authRoles.admin },
       { path: "/dashboard/temp", element: <SolarPlantDashboard />, auth: authRoles.admin },
+      { path: "/dashboard/rms", element: <RMSDashboard />, auth: authRoles.admin },
+
       // e-chart route
       { path: "/charts/echarts", element: <AppEchart />, auth: authRoles.editor }
     ]

@@ -1,7 +1,15 @@
-import { useEffect, useState } from 'react';
-import { getAllRoles, getRoleById, createRole, updateRole, deleteRole } from '../../../../../services/rolesService';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchRoleByIdSuccess, fetchRolesSuccess } from '../../../../../redux/actions/roleActions';
+import { useEffect, useState } from "react";
+import {
+  getAllRoles,
+  getRoleById,
+  createRole,
+  updateRole,
+  deleteRole
+} from "../../../../services/roleService";
+import { fetchRoleByIdSuccess, fetchRolesSuccess } from "../../../../redux/actions/roleActions";
+import { getAllResources } from "../../../../services/resourceService";
+import { getAllActions } from "../../../../services/actionService";
+import { useDispatch, useSelector } from "react-redux";
 
 const useEditRole = ({ id }) => {
   const dispatch = useDispatch();
@@ -10,13 +18,15 @@ const useEditRole = ({ id }) => {
   const [roles, setRoles] = useState([]);
   const [role, setRole] = useState(null);
   const [refetch, setRefetch] = useState(false);
-  const currentRole = useSelector((state) => state.role.role);
+  const [resources, setResources] = useState([]);
+  const [actions, setActions] = useState([]);
+  const currentRole = useSelector((state) => state?.role?.role);
 
   useEffect(() => {
     fetchRoles();
-    if (id) {
-      fetchRoleById(id);
-    }
+    fetchResources();
+    fetchActions();
+    if (id) fetchRoleById(id);
   }, [id, refetch]);
 
   const fetchRoles = async () => {
@@ -27,7 +37,6 @@ const useEditRole = ({ id }) => {
       setRoles(roles);
     } catch (err) {
       setError(err);
-      throw err;
     } finally {
       setLoading(false);
     }
@@ -36,43 +45,51 @@ const useEditRole = ({ id }) => {
   const fetchRoleById = async (id) => {
     try {
       setLoading(true);
-      const role = await getRoleById(id); // API call
-      setRole(role); // local state (optional, if needed)
-      dispatch(fetchRoleByIdSuccess(role)); // ✅ set in Redux
+      const role = await getRoleById(id);
+      setRole(role);
+      dispatch(fetchRoleByIdSuccess(role));
     } catch (err) {
       setError(err);
-      throw err;
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchResources = async () => {
+    try {
+      const res = await getAllResources();
+      setResources(res.data);
+    } catch (err) {
+      console.error("Failed to fetch resources:", err);
+    }
+  };
+
+  const fetchActions = async () => {
+    try {
+      const res = await getAllActions();
+      setActions(res.data);
+    } catch (err) {
+      console.error("Failed to fetch actions:", err);
+    }
+  };
+
   const saveOrUpdateRole = async (roleData) => {
     setLoading(true);
-    setError(null); // Clear previous errors if any
+    setError(null);
     try {
-      let response;
-      let status, message, result;
+      let response, message;
       if (currentRole._id) {
         response = await updateRole(currentRole._id, roleData);
         message = "Role updated successfully";
-        status = true;
-        result = response.data;
       } else {
         response = await createRole(roleData);
         message = "Role created successfully";
-        status = true;
-        result = response.data;
       }
 
-      // Mark for refetch after successful update or creation
       setRefetch(true);
-      return { status, message, result };
+      return { status: true, message, result: response.data };
     } catch (err) {
-      console.error('Error saving or updating role:', err.message || err);
       return { status: false, message: err.message || err, result: null };
-      setError(err);
-      throw err;
     } finally {
       setLoading(false);
     }
@@ -102,6 +119,8 @@ const useEditRole = ({ id }) => {
     removeRole,
     fetchRoles,
     fetchRoleById,
+    resources,
+    actions
   };
 };
 
