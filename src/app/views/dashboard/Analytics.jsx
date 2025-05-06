@@ -13,7 +13,17 @@ import {
   Link,
   Table, TableBody, TableRow, TableCell, TableHead, TableSortLabel,
 } from "@mui/material";
-import { ChevronRight as ChevronRightIcon } from "@mui/icons-material";
+import Bolt from '@mui/icons-material/Bolt';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import Insights from '@mui/icons-material/Insights';
+import Percent from '@mui/icons-material/Percent';
+import AvTimer from '@mui/icons-material/AvTimer';
+import FlashOn from '@mui/icons-material/FlashOn';
+import Speed from '@mui/icons-material/Speed';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import DeviceThermostat from '@mui/icons-material/DeviceThermostat';
+
+import { ChevronRight as ChevronRightIcon, EnergySavingsLeaf } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -21,6 +31,12 @@ import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { Fragment } from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import ForestIcon from '@mui/icons-material/Forest';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import SpaIcon from '@mui/icons-material/Spa';
+import NatureIcon from '@mui/icons-material/Nature';
+// import ForestIcon from '@mui/icons-material/Forest';
+// import SolarPowerIcon from '@mui/icons-material/SolarPower';
 import {
   LineChart,
   Line,
@@ -35,6 +51,7 @@ import { useState } from "react";
 
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SolarPowerIcon from "@mui/icons-material/SolarPower";
+import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import StarsIcon from "@mui/icons-material/Stars";
 import GaugeChart from "react-gauge-chart";
@@ -60,7 +77,7 @@ import {
   BadgeCheck,
   ServerCog
 } from "lucide-react";
-
+import Spa from '@mui/icons-material/Spa';
 const WeatherForecastImpactCard = ({
   yieldForecast = 620,
   minTemp = 24,
@@ -252,7 +269,7 @@ const BatteryStorageCard = ({ soc = 78, discharged = 12.6, health = 92, backupTi
   const formattedBackupTime = backupTime.toFixed(1);
 
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} md={3}>
       <Box
         sx={{
           bgcolor: "#1c1c1e",
@@ -347,14 +364,23 @@ const data = [
   { name: "Yesterday", Exported: 55, Consumed: 45 }
 ];
 const defaultEnergyExportCardData = [
-  { name: "Today", Exported: 320, Consumed: 480 },
-  { name: "Yesterday", Exported: 280, Consumed: 450 },
-  { name: "This Week", Exported: 1900, Consumed: 3100 }
+  { name: "Today", Consumed: 480, ExportToGrid: 320, ExportToBattery: 150, DischargedFromBattery: 100 },
+  { name: "Yesterday", Consumed: 450, ExportToGrid: 280, ExportToBattery: 130, DischargedFromBattery: 90 },
+  { name: "This Week", Consumed: 3100, ExportToGrid: 1900, ExportToBattery: 900, DischargedFromBattery: 700 }
 ];
 const EnergyExportCard = ({ data = defaultEnergyExportCardData }) => {
   return (
-    <Grid item xs={12} md={4}>
-      <StatCard elevation={3} sx={{ bgcolor: "#1c1c1e", color: "#fff", p: 2 }}>
+    <Grid item xs={12} md={5}>
+      <Box
+        elevation={3}
+        sx={{
+          bgcolor: "#1c1c1e",
+          color: "#fff",
+          p: 2,
+          borderRadius: 2,
+          boxShadow: 3,
+        }}
+      >
         {/* Header */}
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography
@@ -367,27 +393,27 @@ const EnergyExportCard = ({ data = defaultEnergyExportCardData }) => {
         </Box>
 
         {/* Purpose Text */}
-        <Typography variant="caption" color="gray" mb={2}>
-          Tracks energy used locally vs exported to the grid. Helps optimize for higher
-          self-consumption and storage decisions.
+        <Typography variant="caption" color="gray" mb={2} display="block">
+          Tracks local energy use, exports to grid, battery storage, and discharges —
+          optimizing for self-consumption and smart storage decisions.
         </Typography>
 
         {/* Chart */}
-        <Box height={250}>
+        <Box height={300}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
               <XAxis dataKey="name" stroke="#ccc" />
               <YAxis stroke="#ccc" />
-              <Tooltip
-                contentStyle={{ backgroundColor: "#2c2c2e", border: "none", color: "#fff" }}
-              />
+              <Tooltip contentStyle={{ backgroundColor: "#2c2c2e", border: "none", color: "#fff" }} />
               <Legend />
               <Bar dataKey="Consumed" fill="#ff9100" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Exported" fill="#00e676" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ExportToGrid" fill="#00e676" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ExportToBattery" fill="#2979ff" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="DischargedFromBattery" fill="#f50057" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
-      </StatCard>
+      </Box>
     </Grid>
   );
 };
@@ -600,7 +626,7 @@ const PlantInformationCard = ({ plant }) => {
 
           {/* Capacity */}
           <Box display="flex" alignItems="center" gap={1} mb={0.8}>
-            <SolarPowerIcon sx={{ fontSize: 16, color: "#fdd835" }} />
+            <EnergySavingsLeafIcon sx={{ fontSize: 16, color: "#fdd835" }} />
             <Typography variant="body2" sx={{ color: "#ccc" }}>
               {display.capacity}
             </Typography>
@@ -840,14 +866,14 @@ const FaultAlarmCard = () => {
 };
 
 // STYLED COMPONENTS
-const ContentBox = styled("div")(({ theme }) => ({
+export const ContentBox = styled("div")(({ theme }) => ({
   margin: "1rem",
   padding: "1rem",
   backgroundColor: "#0D0D0D",
   [theme.breakpoints.down("sm")]: { margin: "1rem" }
 }));
 
-const StatCard = styled(Paper)(({ theme }) => ({
+export const StatCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   display: "flex",
   flexDirection: "column",
@@ -867,7 +893,7 @@ const StatCard = styled(Paper)(({ theme }) => ({
   }
 }));
 
-const StatRow = styled(Box)(({ theme }) => ({
+export const StatRow = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -877,7 +903,13 @@ const StatRow = styled(Box)(({ theme }) => ({
 
 export default function Analytics() {
   const { palette } = useTheme();
-
+  const data = {
+    todayCO2: 1927.38,        // kg
+    monthCO2: 26.38,          // tons
+    totalCO2: 486.73,         // tons
+    treesPlanted: 67967,      // trees
+    coalSaved: 67967,         // tons
+  };
   return (
     <Fragment>
       <ContentBox className="analytics">
@@ -888,108 +920,225 @@ export default function Analytics() {
               {/* Power Card - col-2 */}
               {/* Energy Metrics - col-2 */}
               <Grid item xs={12} md={2}>
-                <StatCard elevation={3}>
-                  <Typography variant="subtitle2" color="success" gutterBottom>
-                    Energy Snapshot
-                  </Typography>
-                  <StatRow>
-                    <Box>
-                      <Typography variant="caption">Real-time Power (kW)</Typography>
-                      <Typography variant="h6">1,152.34</Typography>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      variant="fullWidth"
-                      flexItem
-                      sx={{
-                        bgcolor: "background.paper"
-                      }}
-                    />
-                    <Box>
-                      <Typography variant="caption">Installed Capacity (MWp)</Typography>
-                      <Typography variant="h6">2.29</Typography>
-                    </Box>
-                  </StatRow>
-                </StatCard>
-              </Grid>
+  <StatCard elevation={3}>
+    <Typography variant="button" sx={{ color: '#00ffff' }} gutterBottom>
+      Energy Snapshot
+    </Typography>
+    <Stack spacing={2}>
+      <StatRow>
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <FlashOn sx={{ fontSize: 30, color: 'warning.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Real-time Power (kW)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'warning.main' }}>
+            1,152.34
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Bolt sx={{ fontSize: 30, color: 'info.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Installed Capacity (MWp)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'info.main' }}>
+            2.29
+          </Typography>
+        </Box>
+      </StatRow>
+
+      <Divider sx={{ my: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+      <StatRow>
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <TrendingUp sx={{ fontSize: 30, color: 'secondary.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Daily Yield (kWh/kWp)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'secondary.main' }}>
+            4.85
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Speed sx={{ fontSize: 30, color: 'primary.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Efficiency (%)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'primary.main' }}>
+            95.6
+          </Typography>
+        </Box>
+      </StatRow>
+    </Stack>
+  </StatCard>
+</Grid>
+
 
               {/* Generation Overview - col-5 */}
               <Grid item xs={12} md={5}>
-                <StatCard elevation={3}>
-                  <Typography variant="subtitle2" color="success" gutterBottom>
-                    Generation Overview
-                  </Typography>
-                  <StatRow>
-                    <Box>
-                      <Typography variant="caption">Energy Today (kWh)</Typography>
-                      <Typography variant="h6">2,814.47</Typography>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      variant="fullWidth"
-                      flexItem
-                      sx={{
-                        bgcolor: "background.paper"
-                      }}
-                    />
-                    <Box>
-                      <Typography variant="caption">Energy This Month (MWh)</Typography>
-                      <Typography variant="h6">122.61</Typography>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      variant="fullWidth"
-                      flexItem
-                      sx={{
-                        bgcolor: "background.paper"
-                      }}
-                    />
-                    <Box>
-                      <Typography variant="caption">Total Generation (MWh)</Typography>
-                      <Typography variant="h6">1,203.42</Typography>
-                    </Box>
-                  </StatRow>
-                </StatCard>
-              </Grid>
+  <StatCard elevation={3}>
+  <Typography variant="button" sx={{ color: '#00ffff' }} gutterBottom>
+  Generation Overview
+</Typography>
+    <Stack spacing={2}>
+      <StatRow>
+      <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Bolt sx={{ fontSize: 30, color: 'warning.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Energy Today (kWh)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'warning.main' }}>
+            2,814.47
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <CalendarMonth sx={{ fontSize: 30, color: 'info.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Energy This Month (MWh)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'info.main' }}>
+            122.61
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Insights sx={{ fontSize: 30, color: 'success.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Total Generation (MWh)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.main' }}>
+            1,203.42
+          </Typography>
+        </Box>
+      </StatRow>
+
+      <Divider sx={{ my: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+      <StatRow>
+      <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Percent sx={{ fontSize: 30, color: 'secondary.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Performance Ratio (%)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'secondary.main' }}>
+            82.5
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <AvTimer sx={{ fontSize: 30, color: 'primary.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            System Uptime (%)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'primary.main' }}>
+            99.8
+          </Typography>
+        </Box>
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <FlashOn sx={{ fontSize: 30, color: 'error.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Peak Power (kW)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'error.main' }}>
+            350.2
+          </Typography>
+        </Box>
+      </StatRow>
+    </Stack>
+  </StatCard>
+</Grid>
+
+
 
               {/* Environmental Impact - col-5 */}
+            
               <Grid item xs={12} md={5}>
-                <StatCard elevation={3}>
-                  <Typography variant="subtitle2" color="primary" gutterBottom>
-                    Environmental Impact
-                  </Typography>
-                  <StatRow>
-                    <Box>
-                      <Typography variant="caption">CO₂ Saved Today (kg)</Typography>
-                      <Typography variant="h6">1,927.38</Typography>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      variant="fullWidth"
-                      flexItem
-                      sx={{
-                        bgcolor: "background.paper"
-                      }}
-                    />
-                    <Box>
-                      <Typography variant="caption">CO₂ Saved This Month (tons)</Typography>
-                      <Typography variant="h6">26.38</Typography>
-                    </Box>
-                    <Divider
-                      orientation="vertical"
-                      variant="fullWidth"
-                      flexItem
-                      sx={{
-                        bgcolor: "background.paper"
-                      }}
-                    />
-                    <Box>
-                      <Typography variant="caption">Total CO₂ Saved (tons)</Typography>
-                      <Typography variant="h6">486.73</Typography>
-                    </Box>
-                  </StatRow>
-                </StatCard>
-              </Grid>
+  <StatCard elevation={3} sx={{ p: 2 }}>
+    <Typography variant="button" sx={{ color: '#00ffff' }} gutterBottom>
+      Environmental Impact
+    </Typography>
+
+    <Stack spacing={2}>
+      <StatRow>
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Spa sx={{ fontSize: 30, color: 'success.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            CO₂ Saved Today (kg)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.main' }}>
+            {data.todayCO2.toLocaleString()}
+          </Typography>
+        </Box>
+
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Spa sx={{ fontSize: 30, color: 'success.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            CO₂ This Month (tons)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.main' }}>
+            {data.monthCO2.toLocaleString()}
+          </Typography>
+        </Box>
+
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Spa sx={{ fontSize: 30, color: 'success.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Total CO₂ Saved (tons)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.main' }}>
+            {data.totalCO2.toLocaleString()}
+          </Typography>
+        </Box>
+      </StatRow>
+
+      <Divider sx={{ my: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+      <StatRow>
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <ForestIcon sx={{ fontSize: 30, color: 'success.dark', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Equivalent Trees Planted
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.main' }}>
+            {data.treesPlanted.toLocaleString()}
+          </Typography>
+        </Box>
+
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <WhatshotIcon sx={{ fontSize: 30, color: 'warning.main', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Saved Coal (tons)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'warning.main' }}>
+            {data.coalSaved.toLocaleString()}
+          </Typography>
+        </Box>
+
+        <Divider orientation="vertical" flexItem sx={{ mx: 1, bgcolor: 'rgba(255,255,255,0.2)' }} />
+
+        <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <EnergySavingsLeaf sx={{ fontSize: 30, color: 'success.dark', mb: 0.5 }} />
+          <Typography variant="caption" sx={{ color: 'grey.300' }}>
+            Emission Reduction (tons)
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'success.dark' }}>
+            {((data.totalCO2 * 1.25).toFixed(2)).toLocaleString()}
+          </Typography>
+        </Box>
+      </StatRow>
+    </Stack>
+  </StatCard>
+</Grid>
+
             </Grid>
           </Grid>
 
@@ -1028,90 +1177,3 @@ export default function Analytics() {
     </Fragment>
   );
 }
-
-// import React from "react";
-// import { Grid, Divider } from "@mui/material";
-// // import StatCard from "./StatCard";
-// import ChartCard from "./ChartCard";
-// import CustomLineChart from "./LineChart";
-// import CustomBarChart from "./BarChart";
-// import HeatMapChart from "./HeatMapChart";
-// import FancyDoughnutChart from "./FancyDoughnutChart";
-// import styled from "@emotion/styled";
-// import { Paper } from "@mui/material";
-// const StatCard = styled(Paper)(({ theme }) => ({
-//   padding: theme.spacing(2),
-//   display: "flex",
-//   flexDirection: "column",
-//   height: "100%",
-//   backgroundColor: theme.palette.background.paper
-// }));
-// const Analytics = () => {
-//   return (
-//     <Grid container spacing={3}>
-//       {/* ---------- STAT CARDS ---------- */}
-//       <Grid item xs={12}>
-//         <Grid container spacing={3}>
-//           <Grid item xs={12} sm={6} md={3}>
-//             <StatCard title="Total Energy Produced" value="12,340 kWh" subValue="Monthly" />
-//           </Grid>
-//           <Grid item xs={12} sm={6} md={3}>
-//             <StatCard title="Energy Saved" value="₹ 8,456" subValue="Cost savings" />
-//           </Grid>
-//           <Grid item xs={12} sm={6} md={3}>
-//             <StatCard
-//               title="CO₂ Emissions Avoided"
-//               value="5.2 tons"
-//               subValue="Equivalent to 400 trees"
-//             />
-//           </Grid>
-//           <Grid item xs={12} sm={6} md={3}>
-//             <StatCard title="Current Power Output" value="7.4 kW" subValue="Real-time" />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-
-//       <Grid item xs={12}>
-//         <Divider sx={{ my: 3, borderColor: "#333" }} />
-//       </Grid>
-
-//       {/* ---------- TRENDS IN GRID ---------- */}
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Energy Production vs. Consumption" subtitle="Day, Week, Month View">
-//           <CustomLineChart />
-//         </ChartCard>
-//       </Grid>
-
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Weather vs. Production" subtitle="Irradiance vs Energy">
-//           <CustomLineChart />
-//         </ChartCard>
-//       </Grid>
-
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Device Performance" subtitle="Inverters, Meters, Panels">
-//           <CustomBarChart />
-//         </ChartCard>
-//       </Grid>
-
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Generation Heatmap" subtitle="Hour vs Day Matrix">
-//           <HeatMapChart />
-//         </ChartCard>
-//       </Grid>
-
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Energy Mix" subtitle="Solar, Grid, Battery">
-//           <FancyDoughnutChart />
-//         </ChartCard>
-//       </Grid>
-//       <Grid item xs={12} md={6}>
-//         <ChartCard title="Fault Trends Over Time" subtitle="Daily, Weekly Fault Events">
-//           <CustomLineChart />
-//         </ChartCard>
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default Analytics;

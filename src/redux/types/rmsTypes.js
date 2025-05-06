@@ -1,0 +1,1 @@
+export const SET_RMS_METRIC_DATA = "SET_RMS_METRIC_DATA";

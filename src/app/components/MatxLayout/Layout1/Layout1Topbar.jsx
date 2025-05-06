@@ -117,11 +117,11 @@ const Layout1Topbar = () => {
           <StyledIconButton onClick={handleSidebarToggle}>
             <Menu />
           </StyledIconButton>
-          <PlantSelector 
+          {/* <PlantSelector 
          plants={plants} 
          selectedPlants={selectedPlants} 
          setSelectedPlants={setSelectedPlants}
-        />
+        /> */}
           {/* <IconBox>
             <StyledIconButton>
               <MailOutline />

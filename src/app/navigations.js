@@ -11,8 +11,11 @@ const navigations = [
   { name: "Battery Storage", path: "/plant-monitoring/battery-storage", icon: "battery_full" },
 
   { label: "DEVICE", type: "label" },
+  { name: "Dashbaord", path: "/devices", icon: "dashboard" },
   { name: "Device List", path: "/devices/device-list", icon: "devices" },
   { name: "Fault List", path: "/devices/fault-list", icon: "report_problem" },
+  { name: "Settings", path: "/devices/settings", icon: "settings" },
+  { name: "Firmware Update", path: "/devices/firmware-updated", icon: "system_update" },
 
   { label: "ANALYTICS", type: "label" },
   { name: "Energy Analytics", path: "/analytics/energy-analytics", icon: "analytics" },
